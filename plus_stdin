@@ -12,5 +12,3 @@ for line in sys.stdin:
     x += tonum(line.rstrip())  #今回はGitHub側を採用
 
 print(x)
-
-print(x)
