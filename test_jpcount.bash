@@ -9,7 +9,9 @@ ng () {
 
 res=0
 
+### NORMAL INPUT ###
 out=$(printf '%s\n' '日本語アイabc123' | ./jpcount)
+[ "$?" = 0 ] || ng "$LINENO"
 expected=$(cat <<'EXPECTED'
 Non-space characters: 11
 Kanji: 3
@@ -22,7 +24,24 @@ EXPECTED
 )
 [ "$out" = "$expected" ] || ng "$LINENO"
 
+### HIRAGANA, SPACE, AND OTHER CHARACTER ###
+out=$(printf '%s\n' 'あ !' | ./jpcount)
+[ "$?" = 0 ] || ng "$LINENO"
+expected=$(cat <<'EXPECTED'
+Non-space characters: 2
+Kanji: 0
+Hiragana: 1
+Katakana: 0
+Alphabet: 0
+Digits: 0
+Other: 1
+EXPECTED
+)
+[ "$out" = "$expected" ] || ng "$LINENO"
+
+### EMPTY INPUT ###
 out=$(./jpcount </dev/null)
+[ "$?" = 0 ] || ng "$LINENO"
 expected=$(cat <<'EXPECTED'
 Non-space characters: 0
 Kanji: 0
